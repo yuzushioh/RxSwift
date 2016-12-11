@@ -25,7 +25,7 @@ extension UILabel {
     }
 }
 
-class APIWrappersViewController: ViewController {
+class APIWrappersViewController: ViewController, UITextViewDelegate {
 
     @IBOutlet weak var debugLabel: UILabel!
 
@@ -168,6 +168,10 @@ class APIWrappersViewController: ViewController {
         let textViewValue = Variable("")
         _ = textView.rx.textInput <-> textViewValue
 
+        textView.rx.setDelegate(self)
+            .addDisposableTo(disposeBag)
+
+        
         textViewValue.asObservable()
             .subscribe(onNext: { [weak self] x in
                 self?.debug("UITextView text \(x)")
@@ -201,6 +205,15 @@ class APIWrappersViewController: ViewController {
 
 
 
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        } else {
+            return true
+        }
     }
 
     func debug(_ string: String) {
