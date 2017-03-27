@@ -96,13 +96,9 @@ public class RxCollectionViewDataSourceProxy
     }
 
     private func refreshCollectionViewDataSource() {
-        if self.collectionView?.dataSource === self {
-            if _requiredMethodsDataSource != nil && _requiredMethodsDataSource !== collectionViewDataSourceNotSet {
-                self.collectionView?.dataSource = self
-            }
-            else {
-                self.collectionView?.dataSource = nil
-            }
+        if collectionView?.dataSource === self, _requiredMethodsDataSource !== collectionViewDataSourceNotSet {
+            collectionView?.dataSource = nil
+            collectionView?.dataSource = self
         }
     }
 }
